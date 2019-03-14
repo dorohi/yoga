@@ -120,10 +120,39 @@ window.addEventListener('DOMContentLoaded', function () {
 	descriptionBtn.forEach( function(element){
 		element.addEventListener('click', () => {
 			overlay.style.display = 'block';
-			element.classList.add('more-splash');
+			if (!isMobile()){
+				console.log('Animations ON');
+				if (isIE()){
+					console.log('isIE animations');
+					element.classList.add('more-splash');
+				} else {
+					overlay.classList.remove('fade');
+					console.log('JS animations');
+					//Что бы не загружать код, подключил дополнительный файл с ф-циями анимации
+					animate({
+						duration: 3000,
+						timing: makeEaseOut(bounce),
+						draw: function (progress) {
+							overlay.style.opacity = progress;
+						}
+					});
+				}
+				
+			} else {
+				console.log('Animations OFF');
+			}
 			document.body.style.overflow = 'hidden';
 		});
 	});
+
+	// Отображение анимации в зависимости от браузера и устройства
+	function isIE() {
+		return /edge/.test(navigator.userAgent.toLowerCase()) || /Internet Explorer/.test(navigator.userAgent.toLowerCase());
+	}
+
+	function isMobile() {
+		return (/ipad|iphone|ipod|android|blackberry|webos|windows phone/i.test(navigator.userAgent.toLowerCase()));
+	}
 
 });
 
