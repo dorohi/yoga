@@ -120,10 +120,31 @@ window.addEventListener('DOMContentLoaded', function () {
 	descriptionBtn.forEach( function(element){
 		element.addEventListener('click', () => {
 			overlay.style.display = 'block';
-			element.classList.add('more-splash');
+			if (!isMobile()){
+				console.log('Animations ON');
+				if (isIE()){
+					console.log('isIE animations');
+					element.classList.add('more-splash');
+				} else {
+					overlay.classList.remove('fade');
+					console.log('JS animations');
+				}
+				
+			} else {
+				console.log('Animations OFF');
+			}
 			document.body.style.overflow = 'hidden';
 		});
 	});
+
+	// Отображение анимации в зависимости от браузера и устройства
+	function isIE() {
+		return /edge/.test(navigator.userAgent.toLowerCase()) || /Internet Explorer/.test(navigator.userAgent.toLowerCase());
+	}
+
+	function isMobile() {
+		return (/ipad|iphone|ipod|android|blackberry|webos|windows phone/i.test(navigator.userAgent.toLowerCase()));
+	}
 
 });
 
