@@ -128,6 +128,14 @@ window.addEventListener('DOMContentLoaded', function () {
 				} else {
 					overlay.classList.remove('fade');
 					console.log('JS animations');
+					//Что бы не загружать код, подключил дополнительный файл с ф-циями анимации
+					animate({
+						duration: 3000,
+						timing: makeEaseOut(bounce),
+						draw: function (progress) {
+							overlay.style.opacity = progress;
+						}
+					});
 				}
 				
 			} else {
