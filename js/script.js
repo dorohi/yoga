@@ -1,6 +1,6 @@
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
-	let info = document.querySelector('.info-header'),
+	const info = document.querySelector('.info-header'),
 		tabs = document.querySelectorAll('.info-header-tab'),
 		tabContent = document.querySelectorAll('.info-tabcontent');
 	hideTabContent(1);
@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', function () {
 	}
 
 	info.addEventListener('click', (event) =>{
-		let target = event.target;
+		const target = event.target;
 		if (target && target.classList.contains('info-header-tab')) {
 			for (let i = 0; i < tabs.length; i++) {
 				if (tabs[i] == target){
@@ -32,13 +32,11 @@ window.addEventListener('DOMContentLoaded', function () {
 	});
 
 	//TIMER
-	let deadLine ='2019-03-15';
+	const deadLine = '2019-03-17';
 
 	function getTimeRemaining(endTime){
 		let t = Date.parse(endTime) - Date.parse(new Date());
-		if (t<=0) {
-			t = 0;
-		}
+		t = t<=0 ? t = 0 : t;
 		let seconds = Math.floor( (t/1000) % 60 ),
 			minutes = Math.floor( (t/1000/60) % 60),
 			hours = Math.floor( (t/(1000*60*60)));
@@ -72,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function () {
 	setClock('timer', deadLine);
 
 	//SCROLL
-	let nav = document.querySelectorAll('a'),
+	const nav = document.querySelectorAll('a'),
 		speed = 1/2; // Чем меньше дробь, тем быстрее прокрутка
 	nav.forEach((item)=>{
 		item.addEventListener('click', (event) => {
@@ -100,66 +98,62 @@ window.addEventListener('DOMContentLoaded', function () {
 	});
 
 	//MODAL
-	let more = document.querySelector('.more'),
+	const more = document.querySelector('.more'),
 		overlay = document.querySelector('.overlay'),
 		close = document.querySelector('.popup-close'),
 		descriptionBtn = document.querySelectorAll('.description-btn');
 
-	more.addEventListener('click', function(){
+	more.addEventListener('click', () => {
 		overlay.style.display = 'block';
 		this.classList.add('more-splash');
 		document.body.style.overflow = 'hidden';
 	});
 
-	close.addEventListener('click', function(){
+	close.addEventListener('click', () => {
 		overlay.style.display = 'none';
 		more.classList.remove('more-splash');
 		document.body.style.overflow = '';
 	});
 	
-	descriptionBtn.forEach( function(element){
+	descriptionBtn.forEach( (element) => {
 		element.addEventListener('click', () => {
 			overlay.style.display = 'block';
 			if (!isMobile()){
-				console.log('Animations ON');
+				console.log(`Animations ON`);
 				if (isIE()){
-					console.log('isIE animations');
+					console.log(`isIE = ${isIE()} animations`);
 					element.classList.add('more-splash');
 				} else {
 					overlay.classList.remove('fade');
-					console.log('JS animations');
+					console.log(`isMobile = ${isMobile()} and isIE = ${isIE()} - JS animations`);
 					//Что бы не загружать код, подключил дополнительный файл с ф-циями анимации
 					animate({
 						duration: 3000,
 						timing: makeEaseOut(bounce),
-						draw: function (progress) {
+						draw: (progress) => {
 							overlay.style.opacity = progress;
 						}
 					});
 				}
 				
 			} else {
-				console.log('Animations OFF');
+				overlay.classList.remove('fade');
+				console.log(`isMobele = ${isMobile()} Animations OFF`);
 			}
 			document.body.style.overflow = 'hidden';
 		});
 	});
-
-	// Отображение анимации в зависимости от браузера и устройства
-	function isIE() {
-		return /edge/.test(navigator.userAgent.toLowerCase()) || /Internet Explorer/.test(navigator.userAgent.toLowerCase());
-	}
-
-	function isMobile() {
-		return (/ipad|iphone|ipod|android|blackberry|webos|windows phone/i.test(navigator.userAgent.toLowerCase()));
-	}
-
 });
 
 function getNormal(number) {
-	if (number < 10) {
-		return '0' + number;
-	} else {
-		return number;
-	}
+	return  number < 10 ? '0' + number : number;
+}
+
+// Отображение анимации в зависимости от браузера и устройства
+function isIE() {
+	return /edge/.test(navigator.userAgent.toLowerCase()) || /Internet Explorer/.test(navigator.userAgent.toLowerCase());
+}
+
+function isMobile() {
+	return (/ipad|iphone|ipod|android|blackberry|webos|windows phone/i.test(navigator.userAgent.toLowerCase()));
 }
