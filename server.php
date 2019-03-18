@@ -1,5 +1,3 @@
 <?php 
-for ($i=0; $i < 100000000; $i++) { 
-	$i++;
-}
+sleep(2);
 echo $_SERVER[‘REMOTE_ADDR‘];
