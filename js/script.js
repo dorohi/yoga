@@ -162,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		phones = document.querySelectorAll('input');
 
 	phones.forEach(element => {
-		if (element.getAttribute('type') === 'tel'){
+		if (element.getAttribute('type') === 'tel') {
 			element.addEventListener("focus", mask);
 			element.addEventListener("input", mask);
 			element.addEventListener("blur", mask);
@@ -184,17 +184,18 @@ window.addEventListener('DOMContentLoaded', () => {
 			obj[key] = value;
 		});
 		let json = JSON.stringify(obj);
-
-		request.send(json);
-		request.addEventListener('readystatechange', () => {
-			if (request.readyState < 4) {
+		request.onreadystatechange = () => {
+			console.log(request.status);
+			console.log(request.readyState);
+			statusMessage.classList.add('status');
+			if (request.readyState == 2) {
 				statusMessage.innerHTML = message.loading;
+				//sleep(2000);
 			} else if (request.readyState === 4 && request.status == 200) {
-				statusMessage.classList.add('status');
 				statusMessage.innerHTML = message.success;
 			}
-		});
-
+		};
+		request.send(json);
 		for (let i = 0; i < input.length; i++) {
 			input[i].value = '';
 		}
@@ -267,8 +268,14 @@ function mask(event) {
 		}
 	});
 	if (event.type == "blur") {
-		if (this.value.length == 5) {
+		if (this.value.length == 6) {
 			this.value = "";
 		}
 	}
+}
+
+function sleep(miliseconds) {
+	var currentTime = new Date().getTime();
+
+	while (currentTime + miliseconds >= new Date().getTime()) {}
 }
