@@ -184,14 +184,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			obj[key] = value;
 		});
 		let json = JSON.stringify(obj);
-		request.onreadystatechange = () => {
-			console.log(request.status);
-			console.log(request.readyState);
-			statusMessage.classList.add('status');
-			if (request.readyState == 2) {
-				statusMessage.innerHTML = message.loading;
-				//sleep(2000);
-			} else if (request.readyState === 4 && request.status == 200) {
+
+		statusMessage.classList.add('status');
+		statusMessage.innerHTML = message.loading;
+		request.onreadystatechange = () => {	
+			if (request.readyState === 4 && request.status == 200) {
 				statusMessage.innerHTML = message.success;
 			}
 		};
