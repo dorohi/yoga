@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 
 	//TIMER
-	const deadLine = '2019-03-17';
+	const deadLine = '2019-03-19';
 
 	function getTimeRemaining(endTime){
 		let t = Date.parse(endTime) - Date.parse(new Date());
@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		close = document.querySelector('.popup-close'),
 		descriptionBtn = document.querySelectorAll('.description-btn');
 
-	more.addEventListener('click', () => {
+	more.addEventListener('click', function(){
 		overlay.style.display = 'block';
 		this.classList.add('more-splash');
 		document.body.style.overflow = 'hidden';
@@ -143,6 +143,99 @@ window.addEventListener('DOMContentLoaded', () => {
 			document.body.style.overflow = 'hidden';
 		});
 	});
+
+	//FORMS
+
+	let message = {
+		loading: 'Загрузка . . .',
+		success: 'Спасибо! Скоро мы с вами свяжемся!',
+		failure: 'Что-то пошло не так...'
+	};
+
+	let form = document.querySelector('.main-form'),
+		contactForm = document.querySelector('#form'),
+		input = form.getElementsByTagName('input'),
+		inputContact = contactForm.getElementsByTagName('input'),
+		statusMessage = document.createElement('div'),
+		statusContact = document.createElement('div');
+
+	form.addEventListener('submit', (event) => {
+		event.preventDefault();
+		form.appendChild(statusMessage);
+		
+		let request = new XMLHttpRequest(),
+			phone = document.querySelector('.popup-form__input');
+		
+		console.log(phone);
+
+		request.open('POST', 'server.php');
+		request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
+		phone.addEventListener("focus", mask);
+		phone.addEventListener("input", mask);
+		phone.addEventListener("blur", mask);
+
+		let formData = new FormData(form);
+		let obj = {};
+		formData.forEach(function (value, key) {
+			obj[key] = value;
+		});
+		let json = JSON.stringify(obj);
+
+		request.send(json);
+		request.addEventListener('readystatechange', () => {
+			if (request.readyState < 4){
+				statusMessage.innerHTML = message.loading;
+			} else if (request.readyState === 4 && request.status == 200){
+				statusMessage.classList.add('status');
+				statusMessage.innerHTML = message.success;
+			}
+		});
+
+		for (let i = 0; i < input.length; i++) {
+			input[i].value = '';
+		}
+	});
+
+	//Form contact
+	contactForm.addEventListener('submit', (event) => {
+		event.preventDefault();
+		contactForm.appendChild(statusContact);
+		
+		let request = new XMLHttpRequest(),
+			phone = contactForm.querySelectorAll('input');
+		
+		request.open('POST', 'server.php');
+		request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
+
+		phone[1].addEventListener("focus", mask);
+		phone[1].addEventListener("input", mask);
+		phone[1].addEventListener("blur", mask);
+
+		let formData = new FormData(contactForm);
+		let obj = {};
+		formData.forEach(function (value, key) {
+			obj[key] = value;
+		});
+		let json = JSON.stringify(obj);
+
+		request.send(json);
+		request.addEventListener('readystatechange', () => {
+			statusContact.classList.add('status');
+			statusContact.classList.add('form-contact');
+			if (request.readyState < 3) {
+				console.log(request.status);
+				statusContact.innerHTML = message.loading;
+			} else if (request.readyState === 4 && request.status == 200) {
+				console.log(request.status);
+				statusContact.innerHTML = message.success;
+			}
+		});
+
+		for (let i = 0; i < inputContact.length; i++) {
+			inputContact[i].value = '';
+
+		}
+	});
 });
 
 function getNormal(number) {
@@ -156,4 +249,28 @@ function isIE() {
 
 function isMobile() {
 	return (/ipad|iphone|ipod|android|blackberry|webos|windows phone/i.test(navigator.userAgent.toLowerCase()));
+}
+
+function mask(event) {
+	let matrix = "+38 (0__) ___-__-__",
+		curentSimvol = 0,
+		onlyNumbers = matrix.replace(/\D/g, ""),
+		value = this.value.replace(/\D/g, "");
+	if (onlyNumbers.length >= value.length) {
+		value = onlyNumbers;
+	}
+	this.value = matrix.replace(/./g, a => {
+		if (/[_\d]/.test(a) && curentSimvol < value.length) {
+			return value.charAt(curentSimvol++);
+		} else if (curentSimvol >= value.length) {
+			return '';
+		} else {
+			return a;
+		}
+	});
+	if (event.type == "blur") {
+		if (this.value.length == 6) {
+			this.value = "";
+		}
+	}
 }
