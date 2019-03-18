@@ -145,6 +145,16 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	//Mask on phone numbers
+	let phones = document.querySelectorAll('input');
+	phones.forEach(element => {
+		if (element.getAttribute('type') === 'tel') {
+			element.addEventListener("focus", mask);
+			element.addEventListener("input", mask);
+			element.addEventListener("blur", mask);
+		}
+	});
+
 	//FORMS
 
 	let message = {
@@ -153,87 +163,47 @@ window.addEventListener('DOMContentLoaded', () => {
 		failure: 'Что-то пошло не так...'
 	};
 
-	let form = document.querySelector('.main-form'),
-		contactForm = document.querySelector('#form'),
-		input = form.getElementsByTagName('input'),
-		inputContact = contactForm.getElementsByTagName('input'),
-		statusMessage = document.createElement('div'),
-		statusContact = document.createElement('div'),
-		phones = document.querySelectorAll('input');
+	let forms = document.querySelectorAll('form'),
+		input = document.getElementsByTagName('input'),
+		statusMessage = document.createElement('div');
 
-	phones.forEach(element => {
-		if (element.getAttribute('type') === 'tel'){
-			element.addEventListener("focus", mask);
-			element.addEventListener("input", mask);
-			element.addEventListener("blur", mask);
-		}
-	});
+	forms.forEach(form => {
+		form.addEventListener('submit', function (event) {
+			event.preventDefault();
+			this.appendChild(statusMessage);
 
-	form.addEventListener('submit', (event) => {
-		event.preventDefault();
-		form.appendChild(statusMessage);
+			let request = new XMLHttpRequest();
 
-		let request = new XMLHttpRequest();
+			request.open('POST', 'server.php');
+			request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
 
-		request.open('POST', 'server.php');
-		request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
+			let formData = new FormData(this);
+			let obj = {};
+			formData.forEach(function (value, key) {
+				obj[key] = value;
+			});
+			let json = JSON.stringify(obj);
 
-		let formData = new FormData(form);
-		let obj = {};
-		formData.forEach(function (value, key) {
-			obj[key] = value;
-		});
-		let json = JSON.stringify(obj);
-
-		request.send(json);
-		request.addEventListener('readystatechange', () => {
-			if (request.readyState < 4) {
-				statusMessage.innerHTML = message.loading;
-			} else if (request.readyState === 4 && request.status == 200) {
+			statusMessage.classList.remove('status');
+			statusMessage.innerHTML = `<img src="img/ajax-loader.gif" alt="loader" style="margin-top: 20px;">`;
+			request.onreadystatechange = () => {
 				statusMessage.classList.add('status');
-				statusMessage.innerHTML = message.success;
+				if (!this.classList.contains('main-form')) {
+					statusMessage.classList.add('form-contact');
+				}
+				if (request.readyState === 4 && request.status == 200) {
+					statusMessage.innerHTML = message.success;
+				} else {
+					statusMessage.innerHTML = message.failure;
+				}
+			};
+			request.send(json);
+			for (let i = 0; i < input.length; i++) {
+				input[i].value = '';
 			}
 		});
-
-		for (let i = 0; i < input.length; i++) {
-			input[i].value = '';
-		}
 	});
 
-	//Form contact
-	contactForm.addEventListener('submit', (event) => {
-		event.preventDefault();
-		contactForm.appendChild(statusContact);
-
-		let request = new XMLHttpRequest();
-		request.open('POST', 'server.php');
-		request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
-
-		let formData = new FormData(contactForm);
-		let obj = {};
-		formData.forEach(function (value, key) {
-			obj[key] = value;
-		});
-		let json = JSON.stringify(obj);
-
-		request.send(json);
-		request.addEventListener('readystatechange', () => {
-			statusContact.classList.add('status');
-			statusContact.classList.add('form-contact');
-			if (request.readyState < 3) {
-				console.log(request.status);
-				statusContact.innerHTML = message.loading;
-			} else if (request.readyState === 4 && request.status == 200) {
-				console.log(request.status);
-				statusContact.innerHTML = message.success;
-			}
-		});
-
-		for (let i = 0; i < inputContact.length; i++) {
-			inputContact[i].value = '';
-
-		}
-	});
 });
 
 function getNormal(number) {
@@ -267,8 +237,14 @@ function mask(event) {
 		}
 	});
 	if (event.type == "blur") {
-		if (this.value.length == 5) {
+		if (this.value.length == 6) {
 			this.value = "";
 		}
 	}
+}
+
+function sleep(miliseconds) {
+	var currentTime = new Date().getTime();
+
+	while (currentTime + miliseconds >= new Date().getTime()) {}
 }
