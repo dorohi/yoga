@@ -4,25 +4,26 @@ window.addEventListener('DOMContentLoaded', () => {
 		tabs = document.querySelectorAll('.info-header-tab'),
 		tabContent = document.querySelectorAll('.info-tabcontent');
 	hideTabContent(1);
-	function hideTabContent (key){
+
+	function hideTabContent(key) {
 		for (let i = key; i < tabContent.length; i++) {
 			tabContent[i].classList.remove('show');
 			tabContent[i].classList.add('hide');
 		}
 	}
-	
-	function showTabContent(key){
-		if (tabContent[key].classList.contains('hide')){
+
+	function showTabContent(key) {
+		if (tabContent[key].classList.contains('hide')) {
 			tabContent[key].classList.remove('hide');
 			tabContent[key].classList.add('show');
 		}
 	}
 
-	info.addEventListener('click', (event) =>{
+	info.addEventListener('click', (event) => {
 		const target = event.target;
 		if (target && target.classList.contains('info-header-tab')) {
 			for (let i = 0; i < tabs.length; i++) {
-				if (tabs[i] == target){
+				if (tabs[i] == target) {
 					hideTabContent(0);
 					showTabContent(i);
 					break;
@@ -34,14 +35,14 @@ window.addEventListener('DOMContentLoaded', () => {
 	//TIMER
 	const deadLine = '2019-03-19';
 
-	function getTimeRemaining(endTime){
+	function getTimeRemaining(endTime) {
 		let t = Date.parse(endTime) - Date.parse(new Date());
-		t = t<=0 ? t = 0 : t;
-		let seconds = Math.floor( (t/1000) % 60 ),
-			minutes = Math.floor( (t/1000/60) % 60),
-			hours = Math.floor( (t/(1000*60*60)));
+		t = t <= 0 ? t = 0 : t;
+		let seconds = Math.floor((t / 1000) % 60),
+			minutes = Math.floor((t / 1000 / 60) % 60),
+			hours = Math.floor((t / (1000 * 60 * 60)));
 		return {
-			'total' : t,
+			'total': t,
 			'hours': hours,
 			'minutes': minutes,
 			'seconds': seconds
@@ -54,25 +55,25 @@ window.addEventListener('DOMContentLoaded', () => {
 			minutes = timer.querySelector('.minutes'),
 			seconds = timer.querySelector('.seconds'),
 			timeInterval = setInterval(update, 1000);
-		
-		function update(){
+
+		function update() {
 			let t = getTimeRemaining(endTime);
 			hours.textContent = getNormal(t.hours);
 			minutes.textContent = getNormal(t.minutes);
 			seconds.textContent = getNormal(t.seconds);
 
-			if (t.total<=0){
+			if (t.total <= 0) {
 				clearInterval(timeInterval);
-			} 
+			}
 		}
-		
+
 	}
 	setClock('timer', deadLine);
 
 	//SCROLL
 	const nav = document.querySelectorAll('a'),
-		speed = 1/2; // Чем меньше дробь, тем быстрее прокрутка
-	nav.forEach((item)=>{
+		speed = 1 / 2; // Чем меньше дробь, тем быстрее прокрутка
+	nav.forEach((item) => {
 		item.addEventListener('click', (event) => {
 			event.preventDefault();
 			let target = event.target,
@@ -103,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		close = document.querySelector('.popup-close'),
 		descriptionBtn = document.querySelectorAll('.description-btn');
 
-	more.addEventListener('click', function(){
+	more.addEventListener('click', function () {
 		overlay.style.display = 'block';
 		this.classList.add('more-splash');
 		document.body.style.overflow = 'hidden';
@@ -114,13 +115,13 @@ window.addEventListener('DOMContentLoaded', () => {
 		more.classList.remove('more-splash');
 		document.body.style.overflow = '';
 	});
-	
-	descriptionBtn.forEach( (element) => {
+
+	descriptionBtn.forEach((element) => {
 		element.addEventListener('click', () => {
 			overlay.style.display = 'block';
-			if (!isMobile()){
+			if (!isMobile()) {
 				console.log(`Animations ON`);
-				if (isIE()){
+				if (isIE()) {
 					console.log(`isIE = ${isIE()} animations`);
 					element.classList.add('more-splash');
 				} else {
@@ -135,7 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
 						}
 					});
 				}
-				
+
 			} else {
 				overlay.classList.remove('fade');
 				console.log(`isMobele = ${isMobile()} Animations OFF`);
@@ -157,22 +158,25 @@ window.addEventListener('DOMContentLoaded', () => {
 		input = form.getElementsByTagName('input'),
 		inputContact = contactForm.getElementsByTagName('input'),
 		statusMessage = document.createElement('div'),
-		statusContact = document.createElement('div');
+		statusContact = document.createElement('div'),
+		phones = document.querySelectorAll('input');
+
+	phones.forEach(element => {
+		if (element.getAttribute('type') === 'tel'){
+			element.addEventListener("focus", mask);
+			element.addEventListener("input", mask);
+			element.addEventListener("blur", mask);
+		}
+	});
 
 	form.addEventListener('submit', (event) => {
 		event.preventDefault();
 		form.appendChild(statusMessage);
-		
-		let request = new XMLHttpRequest(),
-			phone = document.querySelector('.popup-form__input');
-		
-		console.log(phone);
+
+		let request = new XMLHttpRequest();
 
 		request.open('POST', 'server.php');
 		request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
-		phone.addEventListener("focus", mask);
-		phone.addEventListener("input", mask);
-		phone.addEventListener("blur", mask);
 
 		let formData = new FormData(form);
 		let obj = {};
@@ -183,9 +187,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		request.send(json);
 		request.addEventListener('readystatechange', () => {
-			if (request.readyState < 4){
+			if (request.readyState < 4) {
 				statusMessage.innerHTML = message.loading;
-			} else if (request.readyState === 4 && request.status == 200){
+			} else if (request.readyState === 4 && request.status == 200) {
 				statusMessage.classList.add('status');
 				statusMessage.innerHTML = message.success;
 			}
@@ -200,16 +204,10 @@ window.addEventListener('DOMContentLoaded', () => {
 	contactForm.addEventListener('submit', (event) => {
 		event.preventDefault();
 		contactForm.appendChild(statusContact);
-		
-		let request = new XMLHttpRequest(),
-			phone = contactForm.querySelectorAll('input');
-		
+
+		let request = new XMLHttpRequest();
 		request.open('POST', 'server.php');
 		request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
-
-		phone[1].addEventListener("focus", mask);
-		phone[1].addEventListener("input", mask);
-		phone[1].addEventListener("blur", mask);
 
 		let formData = new FormData(contactForm);
 		let obj = {};
@@ -239,7 +237,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function getNormal(number) {
-	return  number < 10 ? '0' + number : number;
+	return number < 10 ? '0' + number : number;
 }
 
 // Отображение анимации в зависимости от браузера и устройства
@@ -269,7 +267,7 @@ function mask(event) {
 		}
 	});
 	if (event.type == "blur") {
-		if (this.value.length == 6) {
+		if (this.value.length == 5) {
 			this.value = "";
 		}
 	}
