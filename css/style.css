@@ -704,7 +704,7 @@ header ul li:before {
   color: transparent;
 }
 .overlay .popup-form__btn {
-  width: 180px;
+  width: 190px;
   height: 56px;
   font-size: 15px;
   line-height: 22px;
@@ -716,4 +716,17 @@ header ul li:before {
 }
 .overlay .popup-form__btn:hover {
   box-shadow: 0 0 10px #c78030;
+}
+
+.status{
+  border: 2px dotted #c78030;
+  margin-top: 25px;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  background: darkcyan;
+}
+
+.form-contact {
+  margin-right: 60px;
 }
