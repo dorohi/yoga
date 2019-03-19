@@ -210,7 +210,6 @@ window.addEventListener('DOMContentLoaded', () => {
 					input[i].value = '';
 				}
 			}
-		
 			postData(formData)
 				.then(() => {
 					statusMessage.classList.add('status');
