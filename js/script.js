@@ -236,6 +236,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	let sliderIndex = 1,
 		width = slides[sliderIndex].clientWidth;
 	slideShow(sliderIndex);
+	//const body = body.style.overflowX = 'hidden';
 
 	function slideShow(index, move) {
 		if (index > slides.length) {
@@ -253,6 +254,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		slides[sliderIndex - 1].classList.remove('fade');
 		slides[sliderIndex - 1].style.display = 'block';
 		const img1 = slides[sliderIndex - 1].querySelector('img');
+		document.body.style.overflowX = 'hidden';
 		animate({
 			duration: 1000,
 			timing: makeEaseOut(bounce),
