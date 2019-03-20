@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 
 	//TIMER
-	const deadLine = '2019-03-19';
+	const deadLine = '2019-03-21';
 
 	function getTimeRemaining(endTime) {
 		let t = Date.parse(endTime) - Date.parse(new Date());
@@ -178,15 +178,16 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 			statusMessage.classList.remove('status');
 			statusMessage.innerHTML = `<img src="img/ajax-loader.gif" alt="loader" style="margin-top: 20px;">`;
-			function postData (data) {
-				return new Promise( function(resolve, reject){
+
+			function postData(data) {
+				return new Promise(function (resolve, reject) {
 					let request = new XMLHttpRequest();
 					request.open('POST', 'server.php');
 					request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
 
 					let json = formDataToJSON(data);
-					console.log(data);	
-					console.log(this);	
+					console.log(data);
+					console.log(this);
 
 					request.onreadystatechange = () => {
 						if (request.status == 200) {
@@ -198,6 +199,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					request.send(json);
 				});
 			}
+
 			function formDataToJSON(formData) {
 				let obj = {};
 				formData.forEach(function (value, key) {
@@ -205,7 +207,8 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				return JSON.stringify(obj);
 			}
-			function clearInput (){
+
+			function clearInput() {
 				for (let i = 0; i < input.length; i++) {
 					input[i].value = '';
 				}
@@ -223,6 +226,87 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	// SLIDER
+
+	let sliderIndex = 1;
+	const slides = document.querySelectorAll('.slider-item'),
+		prev = document.querySelector('.prev'),
+		next = document.querySelector('.next'),
+		dotsWrap = document.querySelector('.slider-dots'),
+		dots = document.querySelectorAll('.dot');
+
+	slideShow(sliderIndex);
+
+	function slideShow(index) {
+		index > slides.length ? sliderIndex = 1 : sliderIndex;
+		index < 1 ? sliderIndex = slides.length : sliderIndex;
+		slides.forEach(item => item.style.display = 'none');
+		dots.forEach(item => item.classList.remove('dot-active'));
+
+		slides[sliderIndex - 1].style.display = 'block';
+		dots[sliderIndex - 1].classList.add('dot-active');
+	}
+
+	function slideMove(index) {
+		slideShow(sliderIndex += index);
+	}
+
+	function slideCurent(index) {
+		slideShow(sliderIndex = index);
+	}
+
+	prev.addEventListener('click', () => slideMove(-1));
+	next.addEventListener('click', () => slideMove(1));
+	dotsWrap.addEventListener('click', event => {
+		for (let i = 0; i < dots.length + 1; i++) {
+			if (event.target.classList.contains('dot') && event.target == dots[i-1]){
+				slideCurent(i);
+			}			
+		}
+	});
+
+	//CALC
+
+	const persons = document.querySelectorAll('.counter-block-input')[0],
+		restDays = document.querySelectorAll('.counter-block-input')[1],
+		place = document.getElementById('select'),
+		totalValue = document.getElementById('total');
+
+	let personsSum = 0,
+		daysSum = 0,
+		total =0;
+		
+	totalValue.textContent = 0;
+	persons.addEventListener('input', function () {
+		this.value = this.value.replace(/[^0-9,]/g, '');
+		personsSum = +this.value;
+		persons.textContent = this.value;
+		total = (daysSum * personsSum) * 4000;
+		if (restDays == '') {
+			totalValue.textContent = 0;
+		} else {
+			totalValue.textContent = total;
+		}
+	});
+	restDays.addEventListener('input', function () {
+		this.value = this.value.replace(/[^0-9,]/g, '');
+		daysSum = +this.value;
+		restDays.textContent = this.value;
+		total = (daysSum * personsSum) * 4000;
+		if (persons == ''){
+			totalValue.textContent = 0;
+		} else {
+			totalValue.textContent = total;
+		}
+	});
+	place.addEventListener('change', function (){
+		if (restDays == '' || persons == ''){
+			totalValue.textContent = 0;
+		} else {
+			let temp = total;
+			totalValue.textContent = temp * this.options[this.selectedIndex].value;
+		}
+	});
 });
 
 function getNormal(number) {
