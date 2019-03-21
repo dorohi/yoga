@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', () => {
+//window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 	const info = document.querySelector('.info-header'),
 		tabs = document.querySelectorAll('.info-header-tab'),
@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 
 	//TIMER
-	const deadLine = '2019-03-21';
+	const deadLine = '2019-03-23';
 
 	function getTimeRemaining(endTime) {
 		let t = Date.parse(endTime) - Date.parse(new Date());
@@ -66,7 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				clearInterval(timeInterval);
 			}
 		}
-
+		return '';
 	}
 	setClock('timer', deadLine);
 
@@ -357,7 +357,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 	}
-});
+//});
 
 function getNormal(number) {
 	return number < 10 ? '0' + number : number;
