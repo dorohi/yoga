@@ -1,4 +1,4 @@
-//window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 	const info = document.querySelector('.info-header'),
 		tabs = document.querySelectorAll('.info-header-tab'),
@@ -241,7 +241,7 @@
 	function slideShow(index, move) {
 		if (index > slides.length) {
 			sliderIndex = 1;
-		};
+		}
 		if (index < 1) {
 			sliderIndex = slides.length;
 		}
@@ -357,7 +357,7 @@
 			}
 		});
 	}
-//});
+});
 
 function getNormal(number) {
 	return number < 10 ? '0' + number : number;
