@@ -7,8 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		maska = require('./js/parts/maska.js'),
 		form = require('./js/parts/form.js'),
 		slider = require('./js/parts/slider.js'),
-		cost = require('./js/parts/cost.js'),
-		anime = require('./js/parts/anime.js');
+		cost = require('./js/parts/cost.js');
 
 	tabs();
 	timer();
@@ -17,6 +16,5 @@ window.addEventListener('DOMContentLoaded', () => {
 	maska();
 	form();
 	slider();
-	cost();
-	anime();
+	cost();	
 });
