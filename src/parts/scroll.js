@@ -1,4 +1,5 @@
 function scroll(){
+	'use strict';
 	const nav = document.querySelectorAll('a'),
 		speed = 1 / 2; // Чем меньше дробь, тем быстрее прокрутка
 	nav.forEach((item) => {
