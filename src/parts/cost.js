@@ -1,4 +1,5 @@
 function cost() {
+	'use strict';
 	const persons = document.querySelectorAll('.counter-block-input')[0],
 		restDays = document.querySelectorAll('.counter-block-input')[1],
 		place = document.getElementById('select'),

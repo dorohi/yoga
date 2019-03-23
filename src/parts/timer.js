@@ -1,5 +1,6 @@
 function timer(){
-	const deadLine = '2019-03-23';
+	'use strict';
+	const deadLine = '2019-04-04';
 
 	function getTimeRemaining(endTime) {
 		let t = Date.parse(endTime) - Date.parse(new Date());
