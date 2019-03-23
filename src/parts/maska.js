@@ -1,4 +1,5 @@
 function maska() {
+	'use strict';
 	let phones = document.querySelectorAll('input');
 	phones.forEach(element => {
 		if (element.getAttribute('type') === 'tel') {

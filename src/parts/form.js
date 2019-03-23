@@ -1,4 +1,5 @@
 function form() {
+	'use strict';
 	let message = {
 		loading: 'Загрузка . . .',
 		success: 'Спасибо! Скоро мы с вами свяжемся!',

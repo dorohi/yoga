@@ -1,4 +1,5 @@
 function slider(){
+	'use strict';
 	const slides = document.querySelectorAll('.slider-item'),
 		prev = document.querySelector('.prev'),
 		next = document.querySelector('.next'),

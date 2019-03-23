@@ -1,4 +1,5 @@
 function tabs(){
+	'use strict';
 	const info = document.querySelector('.info-header'),
 		tabs = document.querySelectorAll('.info-header-tab'),
 		tabContent = document.querySelectorAll('.info-tabcontent');
