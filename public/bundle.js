@@ -1557,26 +1557,25 @@ __webpack_require__(/*! ./_fix-re-wks */ "../node_modules/core-js/modules/_fix-r
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-window.addEventListener('DOMContentLoaded', function () {
-  'use strict';
+window.addEventListener('DOMContentLoaded', () => {
+	'use strict';
+	let tabs = __webpack_require__(/*! ./parts/tabs.js */ "./parts/tabs.js"),
+		timer = __webpack_require__(/*! ./parts/timer.js */ "./parts/timer.js"),
+		scroll = __webpack_require__(/*! ./parts/scroll.js */ "./parts/scroll.js"),
+		modal = __webpack_require__(/*! ./parts/modal.js */ "./parts/modal.js"),
+		maska = __webpack_require__(/*! ./parts/maska.js */ "./parts/maska.js"),
+		form = __webpack_require__(/*! ./parts/form.js */ "./parts/form.js"),
+		slider = __webpack_require__(/*! ./parts/slider.js */ "./parts/slider.js"),
+		cost = __webpack_require__(/*! ./parts/cost.js */ "./parts/cost.js");
 
-  var tabs = __webpack_require__(/*! ./parts/tabs.js */ "./parts/tabs.js"),
-      timer = __webpack_require__(/*! ./parts/timer.js */ "./parts/timer.js"),
-      scroll = __webpack_require__(/*! ./parts/scroll.js */ "./parts/scroll.js"),
-      modal = __webpack_require__(/*! ./parts/modal.js */ "./parts/modal.js"),
-      maska = __webpack_require__(/*! ./parts/maska.js */ "./parts/maska.js"),
-      form = __webpack_require__(/*! ./parts/form.js */ "./parts/form.js"),
-      slider = __webpack_require__(/*! ./parts/slider.js */ "./parts/slider.js"),
-      cost = __webpack_require__(/*! ./parts/cost.js */ "./parts/cost.js");
-
-  tabs();
-  timer();
-  scroll();
-  modal();
-  maska();
-  form();
-  slider();
-  cost();
+	tabs();
+	timer();
+	scroll();
+	modal();
+	maska();
+	form();
+	slider();
+	cost();	
 });
 
 /***/ }),
