@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
 	context: path.resolve(__dirname, 'src'),
-	entry: ['@babel/polyfill', './index.js'],
+	entry: "./index.js",
 	output: {
 		filename: "bundle.js",
 		path: path.resolve(__dirname, 'public')
@@ -24,8 +24,7 @@ module.exports = {
 								{
 									"targets":{
 										"browsers": ['last 2 versions', "ie >= 11"]
-									},
-									"useBuiltIns": "entry"
+									}
 								}
 							]
 						]
