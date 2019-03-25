@@ -13,8 +13,8 @@ function form() {
     failure: 'Что-то пошло не так...'
   };
   var forms = document.querySelectorAll('form'),
-      input = document.getElementsByTagName('input'),
-      statusMessage = document.createElement('div');
+    input = document.getElementsByTagName('input'),
+    statusMessage = document.createElement('div');
   forms.forEach(function (form) {
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -35,14 +35,14 @@ function form() {
           request.open('POST', 'server.php');
           request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
           var json = formDataToJSON(data);
-          console.log(data);
-          console.log(this);
-
+          console.log(json);
           request.onreadystatechange = function () {
-            if (request.status == 200) {
-              resolve();
-            } else {
-              reject();
+            if (request.readyState == 4) {
+              if (request.status == 200) {
+                resolve();
+              } else {
+                reject();
+              }
             }
           };
 
@@ -70,6 +70,7 @@ function form() {
       }).catch(function () {
         statusMessage.classList.add('status');
         statusMessage.innerHTML = message.failure;
+        console.log();
       }).then(clearInput);
     });
   });

@@ -7,6 +7,9 @@
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "babel-loader": "^8.0.5",
+    "babel-plugin-es6-promise": "^1.1.1",
+    "es6-promise": "^4.2.6",
+    "formdata-polyfill": "^3.0.17",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"

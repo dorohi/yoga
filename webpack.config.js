@@ -18,7 +18,7 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						'presets':[
+						presets:[
 							[
 								"@babel/preset-env",
 								{
@@ -27,7 +27,8 @@ module.exports = {
 									}
 								}
 							]
-						]
+						],
+						plugins: ["es6-promise"]
 					}
 				}
 			}
